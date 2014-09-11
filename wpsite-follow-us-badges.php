@@ -333,6 +333,36 @@ class WPsiteFollowUs extends WP_Widget {
 		'no_NO',
 		'da_DK'
 	);
+  
+  // EXTEND
+  public static function overrideDefaults($externalDefault) {
+    array_merge(self::$default, $externalDefault);
+  }
+  
+  // EXTEND
+  public static function getSupportedLanguages($channelId) {
+    switch ($channelId) {
+      case 'twitter':
+        return self::$twitter_supported_languages;
+        break;
+      
+      case 'facebook':
+        return self::$facebook_supported_languages;
+        break;
+      
+      case 'google':
+        return self::$google_supported_languages;
+        break;
+      
+      case 'linkedin':
+        return self::$linkedin_supported_languages;
+        break;
+      
+      default:
+        throw new UnexpectedValueException( "Unknown channel ID: $channelId" );
+        break;
+    }
+  }
 
 	/**
 	 * Hooks to 'register_activation_hook'
@@ -539,6 +569,9 @@ class WPsiteFollowUs extends WP_Widget {
 					)
 				)
 			);
+      
+			// EXTEND
+			$settings = apply_filters('wpsite_follow_us_save_settings', $settings);
 
 			update_option('wpsite_follow_us_settings', $settings);
 		}
@@ -669,8 +702,14 @@ class WPsiteFollowUs extends WP_Widget {
 
 		});
 		</script><?php
+      
+		// EXTEND
+		do_action('wpsite_follow_us_before_admin_settings_page', $settings);
 
 		require_once('admin/settings.php');
+      
+		// EXTEND
+		do_action('wpsite_follow_us_after_admin_settings_page', $settings);
 	}
 
 	/**
@@ -985,6 +1024,9 @@ class WPsiteFollowUs extends WP_Widget {
 				}
 			}
 		}
+    
+		// EXTEND
+		$content = apply_filters('wpsite_follow_us_render_widget', $content);
 
 		echo $content;
 

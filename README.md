@@ -1,4 +1,5 @@
 #WPsite Follow Us Badges
+##[Extended for multilingual support]
 
 <img src="http://www.wpsite.net/wp-content/uploads/2014/05/social-media-follow-us-badges-600x194.png" title="WPsiteFollowUsBadgesBanner" align="center"/>
 
